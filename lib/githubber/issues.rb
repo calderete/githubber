@@ -24,6 +24,28 @@ module Githubber
 			Issues.patch("/repos/#{owner}/#{repo}/issues/#{number}", :headers => @auth, :body => { state: "closed"}.to_json)
 		end
 
+		def create_issue(owner, repo, name)
+			options = { title:  name }
+			Issues.post("/repos/#{owner}/#{repo}/issues", :headers => @auth, :body => options.to_json)
+		end
+
+		def list_teams(org)
+			Issues.get("/orgs/#{org}/teams", :headers => @auth)
+		end
+
+		def team_members(id)
+			Issues.get("/teams/#{id}/members", :headers => @auth)
+		end
+
+		def get_gist_content(id)
+			
+			response = Issues.get("/gists/#{id}", :headers => @auth)
+		
+			my_hash = response["files"].values[0]
+			my_hash["content"]
+		end
+		
+
 	end
 end
 #comment on an issue
